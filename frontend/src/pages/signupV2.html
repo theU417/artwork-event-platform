@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - Lockhart Event Sales Platform</title>
+    <link rel="stylesheet" href="../styles/styles.css">
+    <link rel="stylesheet" href="../styles/login.css">    
+    <style>
+        /* Additional styles for signup page */
+        .margin-top-1-5rem {
+            margin-top: 1.5rem;
+        }
+        .signup-container {
+            max-width: 800px;
+            padding: 2.5rem;
+        }
+        
+        .plan-comparison {
+            display: flex;
+            gap: 20px;
+            margin: 2rem 0;
+        }
+        
+        .plan-card {
+            flex: 1;
+            background: rgba(40, 40, 40, 0.7);
+            border-radius: 10px;
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer; /* Added cursor pointer for clickable plans */
+        }
+        
+        .plan-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        
+        /* New style for selected plan */
+        .plan-card.selected-plan {
+            border: 2px solid var(--secondary); /* Highlight border */
+            box-shadow: 0 0 15px var(--secondary-rgb, 0, 206, 255); /* Glow effect */
+        }
+
+        .plan-card.popular {
+            border: 2px solid var(--secondary);
+        }
+        
+        .popular-badge {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: var(--secondary);
+            color: var(--darker);
+            padding: 0.25rem 1rem;
+            font-size: 0.8rem;
+            font-weight: bold;
+            border-bottom-left-radius: 10px;
+        }
+        
+        .plan-header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .plan-price {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--secondary);
+            margin: 0.5rem 0;
+        }
+        
+        .plan-name {
+            font-size: 1.5rem;
+            margin: 0;
+            color: var(--light);
+        }
+        
+        .plan-features {
+            list-style: none;
+            padding: 0;
+            margin: 1.5rem 0;
+        }
+        
+        .plan-features li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            align-items: center;
+        }
+        
+        .plan-features li:before {
+            content: "✓";
+            color: var(--success);
+            margin-right: 0.5rem;
+        }
+        
+        .plan-features .disabled {
+            opacity: 0.5;
+        }
+        
+        .plan-features .disabled:before {
+            content: "✗";
+            color: var(--error);
+        }
+        
+        .reveal-container {
+            position: relative;
+            margin: 2rem 0;
+            height: 300px;
+            overflow: hidden;
+            border-radius: 10px;
+        }
+        
+        .reveal-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(30, 30, 30, 0.9);
+            z-index: 2;
+            transition: transform 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        
+        /* Removed :hover transform to allow JS to control it after click */
+        /* .reveal-overlay:hover {
+            transform: translateX(-100%);
+        } */
+        
+        .reveal-overlay h3 {
+            color: var(--secondary);
+            font-size: 1.5rem;
+        }
+        
+        .reveal-content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            padding: 2rem;
+            background: rgba(40, 40, 40, 0.9);
+            z-index: 1;
+            overflow-y: auto;
+        }
+        
+        .reveal-content h4 {
+            color: var(--secondary);
+            margin-top: 1rem;
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 1rem;
+        }
+        
+        .form-group.half {
+            flex: 1;
+        }
+        
+        .payment-methods {
+            display: flex;
+            gap: 10px;
+            margin: 1rem 0;
+        }
+        
+        .payment-method {
+            flex: 1;
+            text-align: center;
+            padding: 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .payment-method:hover {
+            border-color: var(--secondary);
+        }
+        
+        .payment-method.selected {
+            border-color: var(--secondary);
+            background: rgba(0, 206, 255, 0.1);
+        }
+        
+        .payment-method img {
+            height: 50px;
+            width: auto;
+        }
+        
+        @media (max-width: 768px) {
+            .plan-comparison {
+                flex-direction: column;
+            }
+            
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+        }
+        
+        /* Animation for artwork */
+        .artwork-animation {
+            width: 100%;
+            height: 350px;
+            border-radius: 8px;
+            margin: 3rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .artwork-slideshow {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .artwork-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            opacity: 0;
+            animation: artworkFade 12s infinite;
+        }
+
+        .artwork-slide:nth-child(1) {
+            background-image: url('assets/img/artwork-preview1.jpg');
+            animation-delay: 0s;
+        }
+
+        .artwork-slide:nth-child(2) {
+            background-image: url('assets/img/artwork-preview2.jpg');
+            animation-delay: 4s;
+        }
+
+        .artwork-slide:nth-child(3) {
+            background-image: url('assets/img/artwork-preview3.jpg');
+            animation-delay: 8s;
+        }
+
+        @keyframes artworkFade {
+            0%, 100% {
+                opacity: 0;
+                transform: scale(1);
+            }
+            10%, 30% {
+                opacity: 1;
+                transform: scale(1.02);
+            }
+            40% {
+                opacity: 0;
+                transform: scale(1.04);
+            }
+        }
+
+        /* Scroll-to-top button */
+        .scroll-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: var(--secondary);
+            color: var(--darker);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 999;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            border: none;
+        }
+
+        .scroll-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .scroll-to-top:hover {
+            background: var(--light);
+            transform: translateY(-3px);
+        }
+
+        /* Red Scroll Button */
+        .scroll-to-form-btn {
+            background-color: var(--error); /* Assuming --error is your red color variable */
+            color: var(--light);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            margin-top: 20px; /* Adjust as needed for spacing */
+        }
+
+        .scroll-to-form-btn:hover {
+            background-color: #cc0000; /* A darker shade of red for hover */
+            transform: translateY(-2px);
+        }
+
+        /* Side Scroll Button */
+        .side-scroll-button {
+            position: fixed;
+            bottom: 90px; /* Adjust to position relative to scroll-to-top */
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: var(--secondary);
+            color: var(--darker);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 998; /* Slightly lower z-index than scroll-to-top if they overlap */
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            border: none;
+            font-size: 1.5rem; /* Larger arrow */
+            font-weight: bold;
+        }
+
+        .side-scroll-button.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .side-scroll-button:hover {
+            background: var(--light);
+            transform: translateX(3px); /* Animate slightly to the right on hover */
+        }
+
+
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Validation error message style */
+        .error-message {
+            color: var(--error);
+            font-size: 0.85rem;
+            margin-top: 5px;
+            display: none; /* Hidden by default */
+        }
+        .form-group.has-error input {
+            border-color: var(--error);
+        }
+    </style>
+</head>
+<body>
+    <button class="side-scroll-button" id="sideScrollRightButton" aria-label="Scroll right">›</button>
+    <div class="login-container signup-container">
+        <div class="login-header">
+            <img src="event-platform-logo.png" alt="Company Logo" class="logo">
+            <h2 style="color: mediumpurple">Create Your Account</h2>
+            <p>Choose your plan and start creating amazing events</p>
+        </div>
+        
+        <div class="plan-comparison" id="planSelection">
+            <div class="plan-card" data-plan="beginner">
+                <div class="plan-header">
+                    <h3 class="plan-name">Beginner</h3>
+                    <div class="plan-price">$12.95<span>/month</span></div>
+                    <p>Perfect for new event creators</p>
+                </div>
+                <ul class="plan-features">
+                    <li>1 Free Event per month</li>
+                    <li>Up to 100 attendees</li>
+                    <li>Basic analytics</li>
+                    <li>Email support</li>
+                    <li class="disabled">Premium templates</li>
+                    <li class="disabled">Advanced marketing tools</li>
+                </ul>
+                <button class="login-btn select-plan-btn" data-plan-value="beginner">Select Plan</button>
+            </div>
+            
+            <div class="plan-card popular" data-plan="pro">
+                <div class="popular-badge">POPULAR</div>
+                <div class="plan-header">
+                    <h3 class="plan-name">Pro</h3>
+                    <div class="plan-price">$19.95<span>/month</span></div>
+                    <p>For serious event professionals</p>
+                </div>
+                <ul class="plan-features">
+                    <li>3 Free Events per month</li>
+                    <li>Unlimited attendees</li>
+                    <li>Advanced analytics</li>
+                    <li>Priority support</li>
+                    <li>Premium templates</li>
+                    <li>Advanced marketing tools</li>
+                </ul>
+                <button class="login-btn select-plan-btn" data-plan-value="pro">Select Plan</button>
+            </div>
+        </div>
+        
+        <button class="scroll-to-form-btn" id="scrollFormButton">Proceed to Sign Up</button>
+
+        <div class="reveal-container">
+            <div class="reveal-overlay">
+                <h3>👉 Slide to compare plans</h3>
+            </div>
+            <div class="reveal-content">
+                <h4>Beginner Plan Details</h4>
+                <p>Our Beginner plan gives you everything you need to start hosting events with confidence. You'll get one free event each month with capacity for up to 100 attendees, basic analytics to understand your audience, and email support when you need help.</p>
+                
+                <h4>Pro Plan Details</h4>
+                <p>The Pro plan unlocks the full potential of our platform with three free events monthly, unlimited attendees, advanced analytics, priority support, premium templates, and powerful marketing tools to grow your audience.</p>
+                
+                <h4>Common Features</h4>
+                <p>Both plans include our easy-to-use event builder, ticketing system, attendee management, and mobile-friendly design. All plans come with a 14-day free trial with no credit card required.</p>
+            </div>
+        </div>
+        
+        <div class="artwork-animation">
+            <div class="artwork-slideshow">
+                <div class="artwork-slide"></div>
+                <div class="artwork-slide"></div>
+                <div class="artwork-slide"></div>
+            </div>
+        </div>
+        
+        <form class="login-form" id="signupForm">
+            <input type="hidden" id="selectedPlan" name="plan" value="">
+            
+            <div class="form-row">
+                <div class="form-group half">
+                    <label for="firstName">First Name</label>
+                    <input type="text" id="firstName" placeholder="First name" required>
+                    <div class="error-message" id="firstNameError"></div>
+                </div>
+                <div class="form-group half">
+                    <label for="lastName">Last Name</label>
+                    <input type="text" id="lastName" placeholder="Last name" required>
+                    <div class="error-message" id="lastNameError"></div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" placeholder="Your email address" required>
+                <div class="error-message" id="emailError"></div>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Create Password</label>
+                <input type="password" id="password" placeholder="Create a password" required>
+                <div class="error-message" id="passwordError"></div>
+            </div>
+            
+            <div class="form-group">
+                <label for="confirmPassword">Confirm Password</label>
+                <input type="password" id="confirmPassword" placeholder="Confirm your password" required>
+                <div class="error-message" id="confirmPasswordError"></div>
+            </div>
+            
+            <div class="human-verification">
+                <p>Verify you're human:</p>
+                <div class="captcha-checkbox">
+                    <input type="checkbox" id="signup-human-verify" required>
+                    <label for="signup-human-verify">I'm not a robot</label>
+                    <div class="error-message" id="robotError"></div>
+                </div>
+            </div>
+            
+            <h3 style="margin: 1.5rem 0 1rem; color: var(--light);">Payment Method</h3>
+            <div class="payment-methods" id="paymentMethodsContainer">
+                <div class="payment-method" data-method="visa">
+                    <img src="assets/img/visa.png" alt="Visa">
+                </div>
+                <div class="payment-method" data-method="mastercard">
+                    <img src="assets/img/mastercard.png" alt="Mastercard">
+                </div>
+                <div class="payment-method" data-method="amex">
+                    <img src="assets/img/amex.png" alt="American Express">
+                </div>
+                <div class="payment-method" data-method="paypal">
+                    <img src="assets/img/paypal.png" alt="PayPal">
+                </div>
+            </div>
+            <div class="form-group margin-top-1-5rem">
+                <input type="checkbox" id="termsAgree" required>
+                <label for="termsAgree">I agree to the <a href="#" style="color: var(--secondary);">Terms of Service</a> and <a href="#" style="color: var(--secondary);">Privacy Policy</a></label>
+                <div class="error-message" id="termsError"></div>
+            </div>
+                <label for="termsAgree">I agree to the <a href="#" style="color: var(--secondary);">Terms of Service</a> and <a href="#" style="color: var(--secondary);">Privacy Policy</a></label>
+                <div class="error-message" id="termsError"></div>
+            </div>
+            
+            <button type="submit" class="login-btn" id="signupBtn">Create Account</button>
+            
+            <div class="signup-link">
+                Already have an account? <a href="login.html" style="color: var(--secondary);">Log in</a>
+            </div>
+        </form>
+    </div>
+
+    <button class="scroll-to-top" id="scrollToTop" aria-label="Scroll to top">↑</button>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // DECLARE ALL YOUR ELEMENT REFERENCES AT THE TOP OF THIS BLOCK
+            const signupForm = document.getElementById('signupForm');
+            const planComparison = document.getElementById('planSelection');
+            const scrollFormButton = document.getElementById('scrollFormButton');
+            const scrollToTopButton = document.getElementById('scrollToTop');
+            const sideScrollRightButton = document.getElementById('sideScrollRightButton');
+            const revealOverlay = document.querySelector('.reveal-overlay');
+            const selectedPlanInput = document.getElementById('selectedPlan'); // Added this
+            const paymentMethodInput = document.getElementById('paymentMethod'); // Added this
+            const signupBtn = document.getElementById('signupBtn'); // Added this
+
+
+            let overlayOpen = false; // Track overlay state
+
+            // Helper function for smooth scrolling to an element (vertical)
+            function scrollToSection(elementId) {
+                const targetElement = document.getElementById(elementId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                } else {
+                    console.warn(`Element with ID '${elementId}' not found for vertical scrolling.`);
+                }
+            }
+
+            // --- Plan Selection Logic ---
+            planComparison.addEventListener('click', (event) => {
+                const planCard = event.target.closest('.plan-card');
+                if (planCard) {
+                    document.querySelectorAll('.plan-card').forEach(card => {
+                        card.classList.remove('selected-plan');
+                    });
+                    planCard.classList.add('selected-plan');
+                    selectedPlanInput.value = planCard.dataset.plan; // Use declared selectedPlanInput
+                    
+                    scrollToSection('signupForm');
+                }
+            });
+            
+            // --- Payment Method Selection Logic ---
+            const paymentMethodsContainer = document.getElementById('paymentMethodsContainer'); // Declare this
+            paymentMethodsContainer.addEventListener('click', (event) => {
+                const paymentMethodDiv = event.target.closest('.payment-method');
+                if (paymentMethodDiv) {
+                    // Remove 'selected' from all payment methods
+                    document.querySelectorAll('.payment-method').forEach(method => {
+                        method.classList.remove('selected');
+                    });
+                    // Add 'selected' to the clicked payment method
+                    paymentMethodDiv.classList.add('selected');
+                    paymentMethodInput.value = paymentMethodDiv.dataset.method; // Use declared paymentMethodInput
+                }
+            });
+
+
+            // --- Red Scroll Button (UX Stroll Function) Logic ---
+            scrollFormButton.addEventListener('click', () => {
+                scrollToSection('signupForm');
+            });
+
+            // --- Scroll to Top Functionality ---
+            window.addEventListener('scroll', () => {
+                if (window.pageYOffset > 300) {
+                    scrollToTopButton.classList.add('visible');
+                } else {
+                    scrollToTopButton.classList.remove('visible');
+                }
+                // Only show side scroll button if horizontal scroll content exists and is scrolled
+                // This might need more complex logic if horizontal scroll only applies to a specific div
+                // For a full page horizontal scroll, this is okay.
+                if (window.innerWidth < document.documentElement.scrollWidth && window.pageXOffset > 50) {
+                    sideScrollRightButton.classList.add('visible');
+                } else {
+                    sideScrollRightButton.classList.remove('visible');
+                }
+            });
+            
+            scrollToTopButton.addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+            
+            // --- Side Scroll Button Functionality ---
+            sideScrollRightButton.addEventListener('click', () => {
+                window.scrollBy({
+                    left: 300, // Scroll 300 pixels to the right
+                    behavior: 'smooth'
+                });
+            });
+            
+            // --- Reveal Overlay Logic ---
+            revealOverlay.addEventListener('click', () => {
+                overlayOpen = !overlayOpen; // Toggle the state
+
+                if (overlayOpen) {
+                    revealOverlay.style.transform = 'translateX(-100%)'; // Keep it open
+                    // If you also want to remove the hover effect permanently after click:
+                    // revealOverlay.classList.add('no-hover'); 
+                } else {
+                    revealOverlay.style.transform = 'translateX(0)'; // Close it
+                    // revealOverlay.classList.remove('no-hover');
+                }
+            });
+
+            // --- Form Submission and Validation ---
+            signupForm.addEventListener('submit', function(e) {
+                e.preventDefault(); // Prevent default form submission
+
+                let isValid = true; // Flag to track overall form validity
+
+                // Clear previous error messages
+                document.querySelectorAll('.error-message').forEach(el => {
+                    el.textContent = '';
+                    el.style.display = 'none';
+                });
+                document.querySelectorAll('.form-group').forEach(el => {
+                    el.classList.remove('has-error');
+                });
+
+
+                // Validate Plan Selection
+                if (!selectedPlanInput.value) { // Using the declared variable
+                    displayError('planSelection', 'Please select a plan.');
+                    isValid = false;
+                }
+
+                // Validate First Name
+                if (!document.getElementById('firstName').value.trim()) {
+                    displayError('firstNameError', 'First Name is required.');
+                    isValid = false;
+                }
+
+                // Validate Last Name
+                if (!document.getElementById('lastName').value.trim()) {
+                    displayError('lastNameError', 'Last Name is required.');
+                    isValid = false;
+                }
+
+                // Validate Email
+                const emailInput = document.getElementById('email');
+                if (!emailInput.value.trim()) {
+                    displayError('emailError', 'Email Address is required.');
+                    isValid = false;
+                } else if (!isValidEmail(emailInput.value)) {
+                    displayError('emailError', 'Please enter a valid email address.');
+                    isValid = false;
+                }
+
+                // Validate Password
+                const passwordInput = document.getElementById('password');
+                const confirmPasswordInput = document.getElementById('confirmPassword');
+                if (!passwordInput.value) {
+                    displayError('passwordError', 'Password is required.');
+                    isValid = false;
+                } else if (passwordInput.value.length < 6) { // Example: minimum 6 characters
+                    displayError('passwordError', 'Password must be at least 6 characters.');
+                    isValid = false;
+                }
+
+                // Validate Confirm Password
+                if (passwordInput.value !== confirmPasswordInput.value) {
+                    displayError('confirmPasswordError', 'Passwords do not match.');
+                    isValid = false;
+                }
+
+                // Validate Human Verification
+                if (!document.getElementById('signup-human-verify').checked) {
+                    displayError('robotError', 'Please verify you are not a robot.');
+                    isValid = false;
+                }
+
+                // Validate Payment Method
+                if (!paymentMethodInput.value) { // Using the declared variable
+                    displayError('paymentMethodError', 'Please select a payment method.');
+                    isValid = false;
+                }
+
+                // Validate Terms Agreement
+                if (!document.getElementById('termsAgree').checked) {
+                    displayError('termsError', 'You must agree to the Terms of Service and Privacy Policy.');
+                    isValid = false;
+                }
+
+                if (!isValid) {
+                    // If validation fails, scroll to the first error or the top of the form
+                    const firstErrorElement = document.querySelector('.error-message[style*="display: block"]');
+                    if (firstErrorElement) {
+                        firstErrorElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                    return; // Stop submission if validation fails
+                }
+                
+                // If all validations pass:
+                // Show loading state
+                signupBtn.disabled = true; // Using the declared variable
+                signupBtn.innerHTML = '<span class="loading"></span> Creating Account...';
+                
+                // In a real app, this would submit to your backend
+                setTimeout(() => {
+                    alert('Account created successfully! Redirecting...');
+                    window.location.href = 'artwork.html';
+                }, 1500);
+            });
+
+            // Helper function to display errors
+            function displayError(elementId, message) {
+                const errorElement = document.getElementById(elementId);
+                if (errorElement) {
+                    errorElement.textContent = message;
+                    errorElement.style.display = 'block';
+                    errorElement.closest('.form-group')?.classList.add('has-error'); // Add error class to parent group
+                }
+            }
+
+            // Basic email validation regex
+            function isValidEmail(email) {
+                return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../styles/styles.css">
+    <link rel="stylesheet" href="../styles/login.css">
+    <title>My Artist Profile | Lockhart Event Platform</title>
+    <style>
+        :root {
+            --primary: #6e44ff;
+            --secondary: #00ceff;
+            --dark: #1a1a2e;
+            --light: #f8f9fa;
+            --border: rgba(255,255,255,0.1);
+            --success: #4cc9f0;
+            --warning: #f8961e;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+        
+        body {
+            background-color: var(--dark);
+            color: var(--light);
+            line-height: 1.6;
+        }
+        
+        .container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        /* Profile Header */
+        .profile-header {
+            position: relative;
+            margin-bottom: 2rem;
+        }
+        
+        .profile-banner {
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+            border-radius: 12px;
+            position: relative;
+        }
+        
+        .profile-banner::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 50%;
+            background: linear-gradient(to top, var(--dark), transparent);
+        }
+        
+        .profile-info {
+            display: flex;
+            align-items: flex-end;
+            gap: 1.5rem;
+            margin-top: -60px;
+            padding: 0 1.5rem;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .profile-pic {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 4px solid var(--dark);
+            object-fit: cover;
+            background-color: #333;
+        }
+        
+        .profile-actions {
+            margin-left: auto;
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--light);
+        }
+        
+        /* Main Layout */
+        .profile-main {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+        
+        @media (min-width: 992px) {
+            .profile-main {
+                grid-template-columns: 7fr 5fr;
+            }
+        }
+        
+        /* Left Column */
+        .profile-about {
+            background: rgba(40, 40, 40, 0.7);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid var(--border);
+        }
+        
+        .membership-card {
+            background: linear-gradient(135deg, rgba(110,68,255,0.2), rgba(0,206,255,0.1));
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--primary);
+        }
+        
+        .tier-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            background-color: var(--primary);
+            color: white;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Gallery Section */
+        .gallery-section {
+            margin-top: 2rem;
+        }
+
+        .gallery-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .artwork-thumbnail {
+            aspect-ratio: 1/1;
+            border-radius: 8px;
+            background-size: cover;
+            background-position: center;
+            cursor: pointer;
+            transition: transform 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .artwork-thumbnail:hover {
+            transform: scale(1.03);
+        }
+        
+        /* Right Column */
+        .event-card {
+            background: rgba(40, 40, 40, 0.7);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border: 1px solid var(--border);
+        }
+        
+        .event-card.featured {
+            border: 2px solid var(--secondary);
+        }
+        
+        .event-thumbnail {
+            width: 100%;
+            height: 120px;
+            border-radius: 6px;
+            background-size: cover;
+            background-position: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .event2-thumbnail {
+            height: 80px;
+            background-image: url('assets/img/event2.jpg');
+        }
+        .event3-thumbnail {
+            height: 80px;
+            background-image: url('assets/img/event3.jpg');
+        }
+        
+        /* Progress Tracker */
+        .progress-tracker {
+            display: none; /* Hidden on profile page */
+        }
+        
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .profile-info {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .profile-actions {
+                margin-left: 0;
+                width: 100%;
+            }
+            
+            .btn {
+                flex: 1;
+                text-align: center;
+            }
+        }
+
+        /* Added for Manage Membership button */
+        .btn-manage-membership {
+            margin-top: 0.5rem;
+        }
+
+        /* Event status styles */
+        .event-status-missed {
+            color: var(--warning);
+        }
+
+        /* Moved from inline style for stats grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            margin: 1.5rem 0;
+            text-align: center;
+        }
+        .event-row {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        .event-row-thumbnail {
+            flex: 0 0 80px;
+        }
+
+        /* Remove inline style for event3-thumbnail */
+        .event3-thumbnail {
+            height: 80px;
+            background-image: url('assets/img/event3.jpg');
+        }
+
+        /* Remove inline style for event-row-thumbnail */
+        /* Already handled above */
+
+        /* Remove inline style for missed event status */
+        .event-status-missed {
+            color: var(--warning);
+        }
+
+        /* Full width button */
+        .btn-full-width {
+            width: 100%;
+        }
+
+        /* Calendar grid */
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }
+
+        /* Calendar day */
+        .calendar-day {
+            text-align: center;
+            padding: 0.5rem;
+            border-radius: 4px;
+            background: rgba(0,206,255,0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Progress Tracker -->
+        <div class="progress-tracker">
+            <div class="step active" data-step="profile">
+                <span>1</span>
+                <p>Profile Setup</p>
+            </div>
+            <div class="step" data-step="artwork">
+                <span>2</span>
+                <p>Add Artwork</p>
+            </div>
+            <div class="step" data-step="video">
+                <span>3</span>
+                <p>Video Playlist</p>
+            </div>
+        </div>
+        
+        <!-- Profile Header -->
+        <div class="profile-header">
+            <div class="profile-banner default-banner"></div>
+            <div class="profile-info">
+                <img src="assets/img/default-avatar.jpg" alt="Profile Picture" class="profile-pic">
+                <div>
+                    <h1>Alex Rivera</h1>
+                    <p>Mixed Media Artist | New York</p>
+                </div>
+                <div class="profile-actions">
+                    <button class="btn btn-outline">Edit Profile</button>
+                    <button class="btn btn-primary">Upload Art</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="profile-main">
+            <!-- Left Column -->
+            <div class="left-column">
+                <!-- Membership Section -->
+                <div class="profile-about">
+                        <button class="btn btn-outline btn-manage-membership">Manage Membership</button>
+                        <span class="tier-badge">Pro Member</span>
+                        <h3>Unlock Your Full Potential</h3>
+                    <div class="stats-grid">
+                        <div>
+                            <h3>24</h3>
+                            <p>Artworks</p>
+                        </div>
+                        <div>
+                            <h3>8</h3>
+                            <p>Events</p>
+                        </div>
+                        <div>
+                            <h3>436</h3>
+                            <p>Connections</p>
+                        </div>
+                        <div>
+                            <h3>8</h3>
+                            <p>Events</p>
+                        </div>
+                        <div>
+                            <h3>436</h3>
+                            <p>Connections</p>
+                    <div class="gallery-header">
+                        <h2>Featured Artwork</h2>
+                        <button class="btn btn-outline">View All</button>
+                    </div>
+                <!-- Gallery Section -->
+                <div class="gallery-section profile-about">
+                    <div class="gallery-header">
+                        <h2>Featured Artwork</h2>
+                        <button class="btn btn-outline">View All</button>
+                    </div>
+                    
+                        <div class="event-row-thumbnail">
+                            <div class="event-thumbnail event3-thumbnail"></div>
+                        </div>
+                        <div>
+                            <h4>Oil Painting Workshop</h4>
+                            <p>May 15, 2023 | <span class="event-status-missed">Missed</span></p>
+                        </div>
+                    </div>
+                    
+                    <button class="btn btn-outline btn-full-width">View All Events</button>
+                </div>
+                
+                <!-- Upcoming Events Calendar -->
+                <div class="event-card">
+                    <h3>Upcoming Events</h3>
+                    <div class="calendar-grid">
+                        <!-- Calendar days would be generated with JavaScript -->
+                        <div class="calendar-day">15</div>
+                        <!-- More days... -->
+                    </div>
+                    <p><strong>Next:</strong> Portfolio Review - June 10</p>
+                    <button class="btn btn-outline btn-full-width">Full Calendar</button>
+                            <p>May 28, 2023 | <span class="event-status-attended">Attended</span></p>
+                        </div>
+                            <div class="event-thumbnail event3-thumbnail"></div>
+                    
+                    <div class="event-row">
+                            <p>May 15, 2023 | <span class="event-status-missed">Missed</span></p>
+                            <div class="event-thumbnail event3-thumbnail"></div>
+                        </div>
+                        <div>
+                            <h4>Oil Painting Workshop</h4>
+                            <p>May 15, 2023 | <span class="event-status-missed">Missed</span></p>
+                        </div>
+                    </div>
+                        <div class="event-row-thumbnail">
+                            <div class="event-thumbnail event3-thumbnail"></div>
+                        </div>
+                        <div>
+                            <h4>Oil Painting Workshop</h4>
+                            <p>May 15, 2023 | <span class="event-status-missed">Missed</span></p>
+                        </div>
+                    </div>
+                    
+                    <button class="btn btn-outline btn-full-width">View All Events</button>
+                </div>
+                
+                <!-- Upcoming Events Calendar -->
+                <div class="event-card">
+                    <h3>Upcoming Events</h3>
+                    <div class="calendar-grid">
+                        <!-- Calendar days would be generated with JavaScript -->
+                        <div class="calendar-day">15</div>
+                        <!-- More days... -->
+                    </div>
+                    <p><strong>Next:</strong> Portfolio Review - June 10</p>
+                    <button class="btn btn-outline btn-full-width">Full Calendar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Guided Tour Activation
+        document.addEventListener('DOMContentLoaded', function() {
+            // Only show tour for new users
+            if(!localStorage.getItem('profileTourCompleted')) {
+                setTimeout(() => {
+                    alert("Welcome to your new profile! Let's take a quick tour...");
+                    localStorage.setItem('profileTourCompleted', 'true');
+                }, 1000);
+            }
+            
+            // Set active page in progress tracker
+            const currentPage = 'profile';
+            document.querySelectorAll('.progress-tracker .step').forEach(step => {
+                step.classList.remove('active');
+                if(step.dataset.step === currentPage) {
+                    step.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
