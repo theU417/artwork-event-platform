@@ -2,7 +2,7 @@
   "name": "artbrand-frontend",
   "version": "1.0.0",
   "description": "Frontend for the ArtBrand project",
-  "main": "login.html",
+  "main": "src/pages/login.html",
   "scripts": {
     "start": "open src/pages/login.html"
   },
