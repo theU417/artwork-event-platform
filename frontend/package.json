@@ -1,1 +1,12 @@
-{}
+{
+  "name": "artbrand-frontend",
+  "version": "1.0.0",
+  "description": "Frontend for the ArtBrand project",
+  "main": "login.html",
+  "scripts": {
+    "start": "open login.html"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
