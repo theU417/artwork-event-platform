@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ArtBrand - Create Your Artist Brand</title>
-    <link rel="stylesheet" href="/frontend/src/styles/styles.css">
-    <link rel="stylesheet" href="/frontend/src/styles/login.css">    
+    <link rel="stylesheet" href="../../src/styles/styles.css">
+    <link rel="stylesheet" href="../../src/styles/login.css">      
     <script src="https://cdn.jsdelivr.net/npm/p5@1.11.7/lib/p5.js"></script>
     <style>
         /* Essential styles for the body and p5.js canvas (embedded directly) */
@@ -14,7 +14,7 @@
             overflow-x: hidden; /* Prevent horizontal scrollbars if not needed */
             position: relative; /* Establishes a stacking context for z-index */
             /* Background Image for the body - CORRECTED PATH */
-            background-image: url('/frontend/public/images/img/splash-background.jpg'); 
+            background-image: url('../../public/images/img/splash-background.jpg'); 
             background-size: cover; /* Scale the background image to cover the entire viewport */
             background-repeat: no-repeat; /* Prevent the background image from repeating */
             background-attachment: fixed; /* Keep background fixed when scrolling */
@@ -284,15 +284,15 @@
         }
         /* Corrected paths for artwork-preview images */
         .artwork-slide:nth-child(1) {
-            background-image: url('/frontend/public/images/img/artwork-preview1.jpg');
+            background-image: url('../../public/images/img/artwork-preview1.jpg');
             animation-delay: 0s;
         }
         .artwork-slide:nth-child(2) {
-            background-image: url('/frontend/public/images/img/artwork-preview2.jpg');
+            background-image: url('../../public/images/img/artwork-preview2.jpg');
             animation-delay: 4s;
         }
         .artwork-slide:nth-child(3) {
-            background-image: url('/frontend/public/images/img/artwork-preview3.jpg');
+            background-image: url('../../public/images/img/artwork-preview3.jpg');
             animation-delay: 8s;
         }
         @keyframes artworkFade {
@@ -417,7 +417,7 @@
 </head>
 <body>
     <div class="header">
-        <img src="/frontend/public/images/img/event-platform-logo.png" alt="ArtBrand Logo" width="200" height="189" class="logo">
+        <img src="../../public/images/img/event-platform-logo.png" alt="ArtBrand Logo" width="200" height="189" class="logo">
     </div>
     
     <div class="container">
@@ -1140,6 +1140,6 @@
         }
     </script>
     
-    <script src="app.js" defer></script>
+    <script src="../../src/app.js" defer></script>
 </body>
 </html>
