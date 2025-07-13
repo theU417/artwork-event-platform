@@ -1,0 +1,16 @@
+{
+  "name": "artwork-event-platform-root",
+  "version": "1.0.0",
+  "description": "Root package.json for the Artwork Event Platform monorepo",
+  "private": true,
+  "scripts": {
+    "build:frontend": "cd frontend && npm install --omit=dev && npm run build",
+    "start:frontend": "cd frontend && npm start",
+    "deploy:frontend": "vercel deploy frontend",
+    "dev": "npm run start:frontend"
+  },
+  "workspaces": [
+    "frontend",
+    "backend"
+  ]
+}
