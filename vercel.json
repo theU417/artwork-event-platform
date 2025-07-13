@@ -1,7 +1,4 @@
 {
-  "rewrites": [
-    { "source": "/(.*)", "destination": "/frontend/src/pages/$1" }
-  ],
   "headers": [
     {
       "source": "/(.*)",
@@ -20,5 +17,8 @@
         }
       ]
     }
-  ]
+  ],
+  "installCommand": "npm install",
+  "buildCommand": "npm run build",
+  "outputDirectory": "frontend"
 }
