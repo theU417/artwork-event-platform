@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Playlist</title>
+    <link rel="stylesheet" href="../styles/styles.css">
+    <link rel="stylesheet" href="../styles/login.css">
+    <style>
+        /* Additional styles for overlay controls */
+        .background-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background-image: url('IMG_4204-copy.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+        }
+
+        .background-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: white;
+            opacity: 0.7;
+            z-index: -1;
+            transition: opacity 0.3s ease;
+        }
+
+        .overlay-controls {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 10;
+            background: rgba(30, 30, 30, 0.8);
+            padding: 10px;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .overlay-controls label {
+            color: var(--light);
+            font-size: 0.9rem;
+            margin-right: 5px;
+        }
+        
+        .overlay-slider {
+            width: 100px;
+        }
+
+        /* Ensure content is above background */
+        .video-player-container {
+            position: relative;
+            z-index: 1;
+            
+        }
+
+        /* Custom AirPlay button styling */
+        .vjs-airplay-button .vjs-icon-placeholder {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .vjs-airplay-button .vjs-icon-placeholder::before {
+            content: "⎚";
+            font-size: 1.5em;
+            line-height: 1;
+        }
+
+        /* Fullscreen button customization */
+        .vjs-fullscreen-control .vjs-icon-placeholder::before {
+            font-size: 1.5em;
+        }
+    </style>
+</head>
+<body>
+    <!-- Background with controllable overlay -->
+    <div class="background-container">
+        <div class="background-overlay" id="backgroundOverlay"></div>
+    </div>
+    
+    <div class="video-player-container">
+       
+        
+        <div class="video-header">
+            <h2 style="color: rebeccapurple">Event Video Playlist</h2>
+        </div>
+        
+        <div class="video-wrapper">
+            <video id="artworkVideoPlayer" class="video-js vjs-big-play-centered" playsinline>
+                <p class="vjs-no-js">
+                    To view this video please enable JavaScript, or consider upgrading to a web browser that
+                    <a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+                </p>
+            </video>
+        </div>
+        
+        <div class="playlist-header">
+    <h3></h3>
+<div class="playlist-controls">
+    <button id="shuffleBtn" class="btn-secondary" style="color: rebeccapurple">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M16 3h5v5M4 20L21 3M21 16v5h-5M15 15l6 6M4 4l5 5"></path>
+        </svg>
+        Shuffle
+    </button>
+    <button id="loopBtn" class="btn-secondary active" style="color: rebeccapurple">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M17 2.1l4 4-4 4"></path>
+            <path d="M3 12.2v-2a4 4 0 0 1 4-4h12.8M7 21.9l-4-4 4-4"></path>
+            <path d="M21 11.8v2a4 4 0 0 1-4 4H4.2"></path>
+        </svg>
+        Loop
+    </button>
+    <button class="btn-secondary vjs-airplay-button" style="color: rebeccapurple">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"></path>
+            <path d="M19 15a7 7 0 1 0-14 0"></path>
+            <path d="M5 15v0a9 9 0 0 1 14 0v0"></path>
+        </svg>
+        AirPlay
+    </button>
+    <button class="btn-secondary vjs-fullscreen-control" style="color: rebeccapurple">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+        </svg>
+        Fullscreen
+    </button>
+</div>
+</div>
+    </div>
+
+    <!-- Video.js and plugins -->
+    <link href="https://vjs.zencdn.net/8.6.1/video-js.css" rel="stylesheet">
+    <script src="https://vjs.zencdn.net/8.6.1/video.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/videojs-playlist/5.0.0/videojs-playlist.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/videojs-airplay/1.0.0/videojs-airplay.min.js"></script>
+    
+    <script>
+        // Sample playlist data (replace with your generated files)
+        const artworkPlaylist = [
+            {
+                sources: [
+                    { src: 'artwork-1.mp4', type: 'video/mp4' }
+                ],
+                poster: 'artwork-1-poster.jpg',
+                name: 'Artwork Variation 1'
+            },
+            {
+                sources: [
+                    { src: 'artwork-2.mp4', type: 'video/mp4' }
+                ],
+                poster: 'artwork-2-poster.jpg',
+                name: 'Artwork Variation 2'
+            },
+            // Add more videos as needed
+        ];
+
+        // Initialize player with AirPlay and fullscreen buttons
+        const player = videojs('artworkVideoPlayer', {
+            controls: true,
+            autoplay: true,
+            preload: 'auto',
+            fluid: true,
+            playbackRates: [0.5, 1, 1.5, 2],
+            controlBar: {
+                children: [
+                    'playToggle',
+                    'progressControl',
+                    'volumePanel',
+                    'currentTimeDisplay',
+                    'timeDivider',
+                    'durationDisplay',
+                    'playbackRateMenuButton',
+                    {
+                        name: 'airplayButton',
+                        kind: 'button',
+                        text: 'AirPlay'
+                    },
+                    'fullscreenToggle'
+                ]
+            }
+        });
+
+        // Setup overlay control
+        const overlaySlider = document.getElementById('overlayOpacity');
+        const backgroundOverlay = document.getElementById('backgroundOverlay');
+        
+        overlaySlider.addEventListener('input', function() {
+            backgroundOverlay.style.opacity = this.value;
+        });
+
+        // Setup playlist
+        player.playlist(artworkPlaylist);
+        player.playlist.autoadvance(0); // Auto-advance immediately
+        player.playlist.repeat(true); // Loop playlist by default
+
+        // Initialize AirPlay plugin
+        player.airplay();
+
+        // Setup playlist UI
+        function updatePlaylistUI() {
+            const playlistElement = document.getElementById('videoPlaylist');
+            playlistElement.innerHTML = '';
+            
+            artworkPlaylist.forEach((video, index) => {
+                const isCurrent = player.playlist.currentItem() === index;
+                const item = document.createElement('div');
+                item.className = `playlist-item ${isCurrent ? 'active' : ''}`;
+                item.innerHTML = `
+                    <div class="playlist-item-thumb">
+                        <img src="${video.poster}" alt="${video.name}">
+                        ${isCurrent ? '<div class="now-playing">▶ Playing</div>' : ''}
+                    </div>
+                    <div class="playlist-item-info">
+                        <h4>${video.name}</h4>
+                        <button class="play-item-btn" data-index="${index}">
+                            ${isCurrent ? 'Currently Playing' : 'Play'}
+                        </button>
+                    </div>
+                `;
+                playlistElement.appendChild(item);
+            });
+        }
+
+        // Playlist controls
+        document.getElementById('shuffleBtn').addEventListener('click', () => {
+            player.playlist.shuffle();
+            updatePlaylistUI();
+        });
+
+        document.getElementById('loopBtn').addEventListener('click', function() {
+            const looping = !player.playlist.repeat();
+            player.playlist.repeat(looping);
+            this.classList.toggle('active', looping);
+        });
+
+        // Play item when clicked
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('play-item-btn')) {
+                const index = parseInt(e.target.getAttribute('data-index'));
+                player.playlist.currentItem(index);
+                player.play();
+            }
+        });
+
+        // Update UI on playlist changes
+        player.on('playlistchange', updatePlaylistUI);
+        player.on('play', updatePlaylistUI);
+
+        // Initialize UI
+        updatePlaylistUI();
+    </script>
+</body>
+</html>

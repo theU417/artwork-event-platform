@@ -1,0 +1,13 @@
+{
+  "name": "artbrand-frontend",
+  "version": "1.0.0",
+  "description": "Frontend for the ArtBrand project",
+  "main": "src/pages/artwork.html",
+  "scripts": {
+    "start": "open src/pages/artwork.html",
+    "build": "echo 'No complex build step required for static HTML/CSS/JS files.'"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
