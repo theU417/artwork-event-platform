@@ -4,7 +4,8 @@
   "description": "Frontend for the ArtBrand project",
   "main": "src/pages/artwork.html",
   "scripts": {
-    "start": "open src/pages/artwork.html"
+    "start": "open src/pages/artwork.html",
+    "build": "echo 'No complex build step required for static HTML/CSS/JS files.'"
   },
   "keywords": [],
   "author": "",
