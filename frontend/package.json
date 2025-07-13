@@ -1,16 +1,12 @@
 {
-  "name": "artwork-event-platform-root",
+  "name": "artbrand-frontend",
   "version": "1.0.0",
-  "description": "Root package.json for the Artwork Event Platform monorepo",
-  "private": true,
+  "description": "Frontend for the ArtBrand project",
+  "main": "src/pages/artwork.html",
   "scripts": {
-    "build:frontend": "cd frontend && npm install --omit=dev && npm run build",
-    "start:frontend": "cd frontend && npm start",
-    "deploy:frontend": "vercel deploy frontend",
-    "dev": "npm run start:frontend"
+    "start": "open src/pages/artwork.html"
   },
-  "workspaces": [
-    "frontend",
-    "backend"
-  ]
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }
