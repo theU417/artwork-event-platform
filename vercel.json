@@ -1,7 +1,7 @@
 {
   "installCommand": "npm install",
   "buildCommand": "npm run build",
-  "outputDirectory": "frontend",
+  "outputDirectory": "frontend/src/pages",
   "headers": [
     {
       "source": "/(.*)",
@@ -22,10 +22,10 @@
     }
   ],
   "routes": [
-    { "src": "/", "dest": "/src/pages/artwork.html" },
-    { "src": "/src/pages/artwork.html", "dest": "/src/pages/artwork.html" },
-    { "src": "/src/styles/(.*)", "dest": "/src/styles/$1" },
-    { "src": "/public/images/(.*)", "dest": "/public/images/$1" },
-    { "src": "/src/app.js", "dest": "/src/app.js" }
+    { "src": "/", "dest": "/artwork.html" },
+    { "src": "/artwork.html", "dest": "/artwork.html" },
+    { "src": "/styles/(.*)", "dest": "/styles/$1" },
+    { "src": "/images/(.*)", "dest": "/images/$1" },
+    { "src": "/app.js", "dest": "/app.js" }
   ]
 }
