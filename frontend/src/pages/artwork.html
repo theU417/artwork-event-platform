@@ -4,285 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ArtBrand - Create Your Artist Brand</title>
-    <link rel="stylesheet" href="../styles/styles.css">
-    <link rel="stylesheet" href="../styles/login.css">    
-    <script src="https://cdn.jsdelivr.net/npm/p5@1.11.7/lib/p5.js"></script>
+    <link rel="stylesheet" href="../styles/styles.css"> 
+    <link rel="stylesheet" href="../styles/login.css">    <script src="https://cdn.jsdelivr.net/npm/p5@1.11.7/lib/p5.js"></script>
     <style>
         /* Essential styles for the body and p5.js canvas (embedded directly) */
         body {
-            margin: 0; /* Remove default body margin */
-            overflow-x: hidden; /* Prevent horizontal scrollbars if not needed */
-            position: relative; /* Establishes a stacking context for z-index */
-            /* Background Image for the body */
-            background-image: url('../../public/images/img/splash-background.jpg'); 
-            background-size: cover; /* Scale the background image to cover the entire viewport */
-            background-repeat: no-repeat; /* Prevent the background image from repeating */
-            background-attachment: fixed; /* Keep background fixed when scrolling */
-            background-color: #1a1a1a; /* Fallback color */
-        }
-
-        /* Styles for the p5.js canvas. p5.js automatically adds the 'p5Canvas' class. */
-        .p5Canvas {
-            position: fixed; /* Fixes the canvas to the viewport */
-            top: 0;
-            left: 0;
-            width: 100vw;  /* Make it cover the full viewport width */
-            height: 100vh; /* Make it cover the full viewport height */
-            z-index: -1;    /* Place it behind your main content and background image */
-            pointer-events: none; /* Allows clicks to pass through to elements beneath */
-            background-color: transparent; /* Make the canvas background transparent to show the image */
-        }
-
-        /* Ensure your main content is visible and interactive above the canvas */
-        .container, .header { /* Assuming your main content is within .container and .header */
-            position: relative; /* Gives these elements a stacking context */
-            z-index: 1;          /* Places them above the canvas */
-        }
-        
-        /* NEW: Scroll-to-top button styles */
-        .scroll-to-top {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 50px;
-            height: 50px;
-            background: var(--secondary, #00CFFF); /* Using var with fallback */
-            color: var(--darker, #1a1a1a);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            opacity: 0; /* Hidden by default, will be shown by JS on scroll */
-            visibility: hidden; /* Hidden by default */
-            transition: all 0.3s ease;
-            z-index: 999; /* Ensure it's on top */
-            box-shadow: 0 2px 10px rgba(0,0,0,0.9);
-            border: none;
-            font-size: 1.5rem; /* For the '↑' arrow */
-            font-weight: bold;
-        }
-
-        .scroll-to-top.visible {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .scroll-to-top:hover {
-            background: var(--light, #f0f0f0);
-            transform: translateY(-3px);
-        }
-
-        /* Spinner for loading state (for AI description) */
-        .loading-spinner {
-            border: 4px solid rgba(0, 0, 0, 0.1);
-            border-left-color: #007bff;
-            border-radius: 50%;
-            width: 24px;
-            height: 24px;
-            animation: spin 1s linear infinite;
-            display: inline-block;
-            vertical-align: middle;
-            margin-right: 8px;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        /* Your existing styles from styles.css and login.css are assumed to be externally linked.
-           These are illustrative/backup copies from previous prompts for elements not in those CSS files. */
-        .signup-container {
-            max-width: 800px;
-            padding: 2.5rem;
-        }
-        .plan-comparison {
-            display: flex;
-            gap: 20px;
-            margin: 2rem 0;
-        }
-        .plan-card {
-            flex: 1;
-            background: rgba(40, 40, 40, 0.7);
-            border-radius: 10px;
-            padding: 1.5rem;
-            border: 1px solid var(--border-color);
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-            cursor: pointer;
-        }
-        .plan-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-        }
-        .plan-card.selected-plan {
-            border: 2px solid var(--secondary);
-            box-shadow: 0 0 15px var(--secondary-rgb, 0, 206, 255);
-        }
-        .plan-card.popular {
-            border: 2px solid var(--secondary);
-        }
-        .popular-badge {
-            position: absolute;
-            top: 0;
-            right: 0;
-            background: var(--secondary);
-            color: var(--darker);
-            padding: 0.25rem 1rem;
-            font-size: 0.8rem;
-            font-weight: bold;
-            border-bottom-left-radius: 10px;
-        }
-        .plan-header {
-            text-align: center;
-            margin-bottom: 1.5rem;
-        }
-        .plan-price {
-            font-size: 2rem;
-            font-weight: bold;
-            color: var(--secondary);
-            margin: 0.5rem 0;
-        }
-        .plan-name {
-            font-size: 1.5rem;
             margin: 0;
-            color: var(--light);
-        }
-        .plan-features {
-            list-style: none;
-            padding: 0;
-            margin: 1.5rem 0;
-        }
-        .plan-features li {
-            padding: 0.5rem 0;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            display: flex;
-            align-items: center;
-        }
-        .plan-features li:before {
-            content: "✓";
-            color: var(--success);
-            margin-right: 0.5rem;
-        }
-        .plan-features .disabled {
-            opacity: 0.5;
-        }
-        .plan-features .disabled:before {
-            content: "✗";
-            color: var(--error);
-        }
-        .reveal-container {
+            overflow-x: hidden;
             position: relative;
-            margin: 2rem 0;
-            height: 300px;
-            overflow: hidden;
-            border-radius: 10px;
-        }
-        .reveal-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(30, 30, 30, 0.9);
-            z-index: 2;
-            transition: transform 0.5s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-        }
-        .reveal-overlay:hover {
-            transform: translateX(-100%);
-        }
-        .reveal-overlay h3 {
-            color: var(--secondary);
-            font-size: 1.5rem;
-        }
-        .reveal-content {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            padding: 2rem;
-            background: rgba(40, 40, 40, 0.9);
-            z-index: 1;
-            overflow-y: auto;
-        }
-        .reveal-content h4 {
-            color: var(--secondary);
-            margin-top: 1rem;
-        }
-        .form-row {
-            display: flex;
-            gap: 20px;
-            margin-bottom: 1rem;
-        }
-        .form-group.half {
-            flex: 1;
-        }
-        .payment-methods {
-            display: flex;
-            gap: 10px;
-            margin: 1rem 0;
-        }
-        .payment-method {
-            flex: 1;
-            text-align: center;
-            padding: 1rem;
-            border: 1px solid var(--border-color);
-            border-radius: 5px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .payment-method:hover {
-            border-color: var(--secondary);
-        }
-        .payment-method.selected {
-            border-color: var(--secondary);
-            background: rgba(0, 206, 255, 0.1);
-        }
-        .payment-method img {
-            height: 50px;
-            width: auto;
-        }
-        @media (max-width: 768px) {
-            .plan-comparison {
-                flex-direction: column;
-            }
-            .form-row {
-                flex-direction: column;
-                gap: 0;
-            }
-        }
-        .artwork-animation {
-            width: 100%;
-            height: 350px;
-            border-radius: 8px;
-            margin: 3rem 0;
-            position: relative;
-            overflow: hidden;
-        }
-        .artwork-slideshow {
-            position: relative;
-            width: 100%;
-            height: 100%;
-        }
-        .artwork-slide {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-size: contain;
-            background-position: center;
+            /* Background Image for the body - CORRECTED PATH
+               From frontend/src/pages/ to public/images/img, you need ../../ to get to frontend, then public/... */
+            background-image: url('../../public/images/img/splash-background.jpg'); 
+            background-size: cover;
             background-repeat: no-repeat;
-            opacity: 0;
-            animation: artworkFade 12s infinite;
+            background-attachment: fixed;
+            background-color: #1a1a1a;
         }
+
+        /* ... existing styles ... */
+        
         /* Corrected paths for artwork-preview images */
+        /* From frontend/src/pages/ to public/images/img, you need ../../ to get to frontend, then public/... */
         .artwork-slide:nth-child(1) {
             background-image: url('../../public/images/img/artwork-preview1.jpg');
             animation-delay: 0s;
@@ -295,267 +37,16 @@
             background-image: url('../../public/images/img/artwork-preview3.jpg');
             animation-delay: 8s;
         }
-        @keyframes artworkFade {
-            0%, 100% {
-                opacity: 0;
-                transform: scale(1);
-            }
-            10%, 30% {
-                opacity: 1;
-                transform: scale(1.02);
-            }
-            40% {
-                opacity: 0;
-                transform: scale(1.04);
-            }
-        }
-        /* Scroll-to-top and side-scroll button styles are also repeated in the script, 
-           they should ideally come from styles.css if reused across pages. */
-        .scroll-to-form-btn {
-            background-color: var(--error);
-            color: var(--light);
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 1rem;
-            font-weight: bold;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-            margin-top: 20px;
-        }
-        .scroll-to-form-btn:hover {
-            background-color: #cc0000;
-            transform: translateY(-2px);
-        }
-        .side-scroll-button {
-            position: fixed;
-            bottom: 90px;
-            right: 30px;
-            width: 50px;
-            height: 50px;
-            background: var(--secondary);
-            color: var(--darker);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-            z-index: 998;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-            border: none;
-            font-size: 1.5rem;
-            font-weight: bold;
-        }
-        .side-scroll-button.visible {
-            opacity: 1;
-            visibility: visible;
-        }
-        .side-scroll-button:hover {
-            background: var(--light);
-            transform: translateX(3px);
-        }
-        html {
-            scroll-behavior: smooth;
-        }
-        .error-message {
-            color: var(--error);
-            font-size: 0.85rem;
-            margin-top: 5px;
-            display: none;
-        }
-        .form-group.has-error input {
-            border-color: var(--error);
-        }
+        /* ... rest of your <style> block ... */
     </style>
 </head>
 <body>
-   
+    <div class="header">
+        <img src="../../public/images/img/event-platform-logo.png" alt="ArtBrand Logo" width="200" height="189" class="logo" style="background-color: orangered; background-size: cover">
+    </div>
     
     <div class="container">
-        <header>
-           <img src="../../public/images/img/event-platform-logo.png" alt="ArtBrand Logo" width="520" height="289" class="logo" style="background-color: orangered; background-size: cover">
-        </header>
-        <div class="progress-bar">
-            <div class="progress" id="progress"></div>
         </div>
-        
-        <div class="step active" id="step1">
-            <h2>Step 1: Your Artistic Brand</h2>
-            
-            <label for="companyName" id="companyNameLabel" style="color: white">Artist Name | Company Name</label>
-            <input type="text" id="companyName" placeholder="Your company name" aria-labelledby="companyNameLabel" required>
-            <div id="companyNameError" class="error-message">Please enter your brand name</div>
-            
-            <div class="nav-buttons">
-                <button class="btn" onclick="validateStep1()">Continue</button>
-            </div>
-        </div>
-        
-        <div class="step" id="step2">
-            <h2>Step 2: Upload Your Logo</h2>
-            <p>Upload a logo or representative image for your brand.</p>
-            
-            <div class="preview-container" id="logoPreview">
-                <p>Logo will appear here</p>
-            </div>
-            
-            <input type="file" id="logoUpload" accept="image/*" aria-label="Upload brand logo">
-            <div id="logoUploadError" class="error-message">Please upload a logo</div>
-            
-            <div class="nav-buttons">
-                <button class="btn back-btn" onclick="prevStep()">Back</button>
-                <button class="btn" onclick="validateStep2()">Continue</button>
-            </div>
-        </div>
-        
-        <div class="step" id="step3">
-            <h2>Step 3: Define Your Brand Voice</h2>
-            <p>Select 10 words that best represent your brand's personality:</p>
-            
-            <div class="counter" id="wordCounter">0/10 words selected</div>
-            
-            <div class="word-grid" id="wordGrid" role="grid">
-                </div>
-            
-            <div class="nav-buttons">
-                <button class="btn back-btn" onclick="prevStep()">Back</button>
-                <button class="btn" id="analyzeBtn" disabled onclick="analyzeBrandVoice()">Analyze My Brand Voice</button>
-            </div>
-        </div>
-        
-        <div class="step" id="step4">
-            <h2>Step 4: Your Brand Personality Words</h2>
-            <p>Here are the 10 words you selected to represent your brand:</p>
-            
-            <div class="selected-words-container" id="selectedWordsDisplay" role="list">
-                </div>
-            
-            <p>Based on these selections, we'll now determine your brand voice.</p>
-            
-            <div class="nav-buttons">
-                <button class="btn back-btn" onclick="prevStep()">Back</button>
-                <button class="btn" onclick="showBrandVoiceResult()">Show My Brand Voice</button>
-            </div>
-        </div>
-        
-        <div class="step" id="step5">
-            <h2>Step 5: Your Brand Voice</h2>
-            <p>Based on your selections, here's your brand personality:</p>
-            
-            <div class="brand-result" id="brandResult">
-                </div>
-            
-            <p>Does this sound right for your brand?</p>
-            
-            <div class="nav-buttons">
-                <button class="btn back-btn" onclick="prevStep()">Back</button>
-                <button class="btn" onclick="acceptBrandVoice()">Yes, Continue</button>
-                <button class="btn btn-secondary" onclick="retryBrandVoice()">Try Again</button>
-            </div>
-        </div>
-        
-        <div class="step" id="step6">
-            <h2>Step 6: Upload Your Artwork</h2>
-            <p>Now let's add the artwork you want to promote.</p>
-            
-            <div class="preview-container" id="artworkPreview">
-                <p>Artwork will appear here</p>
-            </div>
-            
-            <input type="file" id="artworkUpload" accept="image/*" aria-label="Upload artwork">
-            <div id="artworkUploadError" class="error-message">Please upload your artwork</div>
-            
-            <label for="artworkName" id="artworkNameLabel">Artwork Title</label>
-            <input type="text" id="artworkName" placeholder="Name of your artwork" aria-labelledby="artworkNameLabel" required>
-            <div id="artworkNameError" class="error-message">Please enter artwork title</div>
-            
-            <label for="artworkSize" id="artworkSizeLabel">Finished Size</label>
-            <input type="text" id="artworkSize" placeholder="e.g., 24x36 inches" aria-labelledby="artworkSizeLabel">
-            
-            <label for="artworkPrice" id="artworkPriceLabel">Price</label>
-            <input type="text" id="artworkPrice" placeholder="e.g., $450" aria-labelledby="artworkPriceLabel">
-            
-            <div class="nav-buttons">
-                <button class="btn back-btn" onclick="prevStep()">Back</button>
-                <button class="btn" id="generateDescriptionBtn">Generate Description</button>
-            </div>
-        </div>
-        
-        <div class="step" id="step7">
-            <h2>Step 7: Artwork Description</h2>
-            <p>Here's a description that matches your brand voice:</p>
-            
-            <div id="aiDescription" style="background: rgba(40, 40, 40, 0.7); padding: 15px; border-radius: 8px; margin: 15px 0; border-left: 4px solid var(--primary);">
-                <p>Generating your masterpiece\'s story...</p>
-                <div class="loading-spinner"></div>
-            </div>
-            
-            <label for="descriptionEdit" id="descriptionEditLabel">Edit if needed:</label>
-            <textarea id="descriptionEdit" rows="4" aria-labelledby="descriptionEditLabel"></textarea>
-            
-            <div class="nav-buttons">
-                <button class="btn back-btn" onclick="prevStep()">Back</button>
-                <button class="btn" onclick="nextStep(7)">Continue</button>
-            </div>
-        </div>
-        
-        <div class="step" id="step8">
-            <h2>Step 8: Voiceover Options</h2>
-            <p>Based on your brand voice, we recommend these voice traits for your commercial:</p>
-            
-            <div id="voiceRecommendation" style="background: rgba(40, 40, 40, 0.7); padding: 15px; border-radius: 8px; margin: 15px 0; border-left: 4px solid var(--primary);">
-                </div>
-            
-            <p>Preview voice options:</p>
-            <div class="voice-options" role="group" aria-labelledby="voiceOptionsLabel">
-                <span id="voiceOptionsLabel" class="sr-only">Voice options</span>
-                <div class="voice-option" onclick="selectVoice(this)" role="button" tabindex="0">Sophisticated</div>
-                <div class="voice-option" onclick="selectVoice(this)" role="button" tabindex="0">Warm</div>
-                <div class="voice-option" onclick="selectVoice(this)" role="button" tabindex="0">Authoritative</div>
-                <div class="voice-option" onclick="selectVoice(this)" role="button" tabindex="0">Playful</div>
-            </div>
-            
-            <div class="nav-buttons">
-                <button class="btn back-btn" onclick="prevStep()">Back</button>
-                <button class="btn" onclick="validateStep8()">Generate Voiceover</button>
-            </div>
-        </div>
-        
-        <div class="step" id="step9">
-            <h2>Step 9: Review Your Voiceover</h2>
-            <p>Listen to your generated voiceover:</p>
-            
-            <div style="margin: 20px 0; text-align: center;">
-                <audio controls id="voiceoverAudio" aria-label="Generated voiceover preview"></audio>
-            </div>
-            
-            <p>Would you like to add background music?</p>
-            
-            <div class="nav-buttons">
-                <button class="btn back-btn" onclick="prevStep()">Back</button>
-                <button class="btn" onclick="addMusic()">Yes, Add Music</button>
-                <button class="btn btn-secondary" onclick="nextStep(9)">No Thanks, Continue</button>
-            </div>
-        </div>
-        
-        <div class="step" id="step10">
-            <h2>Your Artwork Commercial</h2>
-            <p>Here's your final promotional piece:</p>
-            
-            <div class="preview-container" id="finalPreview">
-                <p>Your animated commercial will appear here</p>
-            </div>
-            
-            <div class="nav-buttons">
-                <button class="btn back-btn" onclick="prevStep()">Back</button>
-                <button class="btn" onclick="downloadCommercial()">Download Commercial</button>
-                <button class="btn btn-secondary" onclick="startOver()">Create Another</button>
-            </div>
-        </div>
-    </div>
     <button class="scroll-to-top" id="scrollToTop" aria-label="Scroll to top">↑</button>
 
     <script>
@@ -618,7 +109,6 @@
         }
 
         // --- Your existing application JavaScript starts here ---
-        // Word bank for brand voice selection
         const wordBank = [
             "Witty", "Bold", "Cheeky", "Unapologetic", "Supportive", 
             "Reassuring", "Nurturing", "Energetic", "Fun", "Casual", 
@@ -628,7 +118,6 @@
             "Alluring", "Elevated", "Exclusive", "Playful", "Rebellious"
         ];
         
-        // Brand personality definitions (with story templates for AI simulation)
         const brandPersonalities = {
             "Sassy & Bold": {
                 traits: ["Witty", "Bold", "Cheeky", "Unapologetic"],
@@ -664,7 +153,7 @@
                 traits: ["Edgy", "Defiant", "Visionary", "Rebellious"],
                 description: "The challenger brand who breaks convention.",
                 example: "Harley-Davidson",
-                story_template: (artworkName) => `**Beginning:** Silence shattered. Expectations demolished. Then, a roar of color and chaos, born from a refusal to conform, demanded attention. This wasn't art; it was a revolution, splashed across a canvas.\n\n**Middle:** ${artworkName} doesn't politely ask for a space; it *takes* it, with a defiant grin. Its audacious strokes and electric palette are a middle finger to the status quo, a vibrant shout against the ordinary. It’s got that raw, untamed energy that makes you question everything you thought you knew about art. This piece isn't just about what you see; it's about what you *feel* – the exhilarating rush of breaking free.\n\n**End:** Hang ${artworkName}, and watch your space transform. It’s more than decor; it's a manifesto, a daily reminder to challenge, to disrupt, to create your own damn rules. This art isn't for everyone, and that's exactly the point. It’s for the bold, the defiant, the ones ready to make their own mark.`
+                story_template: (artworkName) => `**Beginning:** Silence shattered. Expectations demolished. Then, a roar of color and chaos, born from a refusal to conform, demanded attention. This wasn't art; it was a revolution, splashed across a canvas.\n\n**Middle:** ${artworkName} doesn't politely ask for a space; it *takes* it, with a defiant grin. Its audacious splashes and electric palette are a middle finger to the status quo, a vibrant shout against the ordinary. It’s got that raw, untamed energy that makes you question everything you thought you knew about art. This piece isn't just about what you see; it's about what you *feel* – the exhilarating rush of breaking free.\n\n**End:** Hang ${artworkName}, and watch your space transform. It’s more than decor; it's a manifesto, a daily reminder to challenge, to disrupt, to create your own damn rules. This art isn't for everyone, and that's exactly the point. It’s for the bold, the defiant, the ones ready to make their own mark.`
             },
             "Quirky & Offbeat": {
                 traits: ["Unpredictable", "Weird"],
@@ -690,412 +179,412 @@
                 example: "Chanel",
                 story_template: (artworkName) => `**Beginning:** A whisper of anticipation, the soft gleam of curated excellence. Then, a revelation, not just of art, but of a lifestyle, meticulously crafted, utterly irresistible. It arrives with an air of effortless grandeur.\n\n**Middle:** ${artworkName} commands the room with an unspoken elegance, a visual symphony of bespoke craftsmanship and unparalleled aesthetic. Every brushstroke, every subtle hue, speaks to a heritage of refinement and an uncompromising pursuit of beauty. It doesn’t merely exist; it *exudes* a coveted aura, transforming its surroundings into a private salon of elevated taste, accessible only to those who truly appreciate the pinnacle of artistry.\n\n**End:** To possess ${artworkName} is to embrace a legacy of aspiration and timeless allure. It is more than an acquisition; it is an investment in an exclusive narrative, a statement of discerning luxury that transcends the ephemeral. This masterpiece doesn't just hang on your wall; it *enriches* your very existence, a daily affirmation of your ascent into a world of sophisticated beauty.`
             }
-        };
-        
-        // Current state
-        let currentStep = 1;
-        let selectedWords = [];
-        let brandVoice = ""; // Will store the determined brand voice string
-        let selectedArtworkFile = null; // Stores the uploaded artwork file
-        let selectedArtworkDataURL = null; // Stores the base64 URL of the artwork image
-        let selectedVoice = "";
-        let stepHistory = [];
-        
-        // Initialize the app
-        document.addEventListener('DOMContentLoaded', function() {
-            // Populate word grid
-            const wordGrid = document.getElementById('wordGrid');
-            wordBank.forEach(word => {
-                const wordElement = document.createElement('div');
-                wordElement.className = 'word-option';
-                wordElement.textContent = word;
-                wordElement.onclick = function() { selectWord(this, word); };
-                wordElement.setAttribute('role', 'gridcell');
-                wordGrid.appendChild(wordElement);
-            });
-            
-            // Set up file upload previews for Logo
-            document.getElementById('logoUpload').addEventListener('change', function(e) {
-                document.getElementById('logoUploadError').style.display = 'none';
-                previewImage(e.target.files[0], 'logoPreview');
-            });
-            
-            // Set up file upload previews and store file for Artwork
-            document.getElementById('artworkUpload').addEventListener('change', function(e) {
-                document.getElementById('artworkUploadError').style.display = 'none';
-                const file = e.target.files[0];
-                selectedArtworkFile = file; // Store the file object
-                previewImage(file, 'artworkPreview'); // Show preview
-                
-                // Read file as Data URL (Base64) to potentially send to AI
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = function(event) {
-                        selectedArtworkDataURL = event.target.result; // Store Base64 string
-                    };
-                    reader.readAsDataURL(file);
-                } else {
-                    selectedArtworkDataURL = null;
-                }
-            });
+        };
+        
+        // Current state
+        let currentStep = 1;
+        let selectedWords = [];
+        let brandVoice = ""; // Will store the determined brand voice string
+        let selectedArtworkFile = null; // Stores the uploaded artwork file
+        let selectedArtworkDataURL = null; // Stores the base64 URL of the artwork image
+        let selectedVoice = "";
+        let stepHistory = [];
+        
+        // Initialize the app
+        document.addEventListener('DOMContentLoaded', function() {
+            // Populate word grid
+            const wordGrid = document.getElementById('wordGrid');
+            wordBank.forEach(word => {
+                const wordElement = document.createElement('div');
+                wordElement.className = 'word-option';
+                wordElement.textContent = word;
+                wordElement.onclick = function() { selectWord(this, word); };
+                wordElement.setAttribute('role', 'gridcell');
+                wordGrid.appendChild(wordElement);
+            });
+            
+            // Set up file upload previews for Logo
+            document.getElementById('logoUpload').addEventListener('change', function(e) {
+                document.getElementById('logoUploadError').style.display = 'none';
+                previewImage(e.target.files[0], 'logoPreview');
+            });
+            
+            // Set up file upload previews and store file for Artwork
+            document.getElementById('artworkUpload').addEventListener('change', function(e) {
+                document.getElementById('artworkUploadError').style.display = 'none';
+                const file = e.target.files[0];
+                selectedArtworkFile = file; // Store the file object
+                previewImage(file, 'artworkPreview'); // Show preview
+                
+                // Read file as Data URL (Base64) to potentially send to AI
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        selectedArtworkDataURL = event.target.result; // Store Base64 string
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    selectedArtworkDataURL = null;
+                }
+            });
 
-            // Add keyboard support for voice options
-            document.querySelectorAll('.voice-option').forEach(option => {
-                option.addEventListener('keydown', function(e) {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                        selectVoice(this);
-                    }
-                });
-            });
+            // Add keyboard support for voice options
+            document.querySelectorAll('.voice-option').forEach(option => {
+                option.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        selectVoice(this);
+                    }
+                });
+            });
 
-            // Event listener for the "Generate Description" button
-            document.getElementById('generateDescriptionBtn').addEventListener('click', validateStep6);
-            
-            updateProgress();
+            // Event listener for the "Generate Description" button
+            document.getElementById('generateDescriptionBtn').addEventListener('click', validateStep6);
+            
+            updateProgress();
 
-            // --- Scroll to Top Functionality for artwork.html ---
-            const scrollToTopButton = document.getElementById('scrollToTop');
-            if (scrollToTopButton) { // Ensure the button exists on this page
-                window.addEventListener('scroll', () => {
-                    if (window.pageYOffset > 300) { // Show button after scrolling 300px
-                        scrollToTopButton.classList.add('visible');
-                    } else {
-                        scrollToTopButton.classList.remove('visible');
-                    }
-                });
-                
-                scrollToTopButton.addEventListener('click', () => {
-                    window.scrollTo({
-                        top: 0,
-                        behavior: 'smooth'
-                    });
-                });
-            }
-        });
-        
-        // Navigation functions
-        function nextStep(stepNumber) {
-            stepHistory.push(currentStep);
-            document.getElementById(`step${currentStep}`).classList.remove('active');
-            currentStep = stepNumber + 1;
-            document.getElementById(`step${currentStep}`).classList.add('active');
-            updateProgress();
-            window.scrollTo(0, 0);
-        }
-        
-        function prevStep() {
-            if (stepHistory.length > 0) {
-                document.getElementById(`step${currentStep}`).classList.remove('active');
-                currentStep = stepHistory.pop();
-                document.getElementById(`step${currentStep}`).classList.add('active');
-                updateProgress();
-                window.scrollTo(0, 0);
-            }
-        }
-        
-        function updateProgress() {
-            const totalSteps = 10;
-            const progress = (currentStep / totalSteps) * 100;
-            document.getElementById('progress').style.width = `${progress}%`;
-        }
-        
-        // Validation functions
-        function validateStep1() {
-            const companyName = document.getElementById('companyName').value.trim();
-            if (!companyName) {
-                document.getElementById('companyNameError').style.display = 'block';
-                return;
-            }
-            nextStep(1);
-        }
+            // --- Scroll to Top Functionality for artwork.html ---
+            const scrollToTopButton = document.getElementById('scrollToTop');
+            if (scrollToTopButton) { // Ensure the button exists on this page
+                window.addEventListener('scroll', () => {
+                    if (window.pageYOffset > 300) { // Show button after scrolling 300px
+                        scrollToTopButton.classList.add('visible');
+                    } else {
+                        scrollToTopButton.classList.remove('visible');
+                    }
+                });
+                
+                scrollToTopButton.addEventListener('click', () => {
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                });
+            }
+        });
+        
+        // Navigation functions
+        function nextStep(stepNumber) {
+            stepHistory.push(currentStep);
+            document.getElementById(`step${currentStep}`).classList.remove('active');
+            currentStep = stepNumber + 1;
+            document.getElementById(`step${currentStep}`).classList.add('active');
+            updateProgress();
+            window.scrollTo(0, 0);
+        }
+        
+        function prevStep() {
+            if (stepHistory.length > 0) {
+                document.getElementById(`step${currentStep}`).classList.remove('active');
+                currentStep = stepHistory.pop();
+                document.getElementById(`step${currentStep}`).classList.add('active');
+                updateProgress();
+                window.scrollTo(0, 0);
+            }
+        }
+        
+        function updateProgress() {
+            const totalSteps = 10;
+            const progress = (currentStep / totalSteps) * 100;
+            document.getElementById('progress').style.width = `${progress}%`;
+        }
+        
+        // Validation functions
+        function validateStep1() {
+            const companyName = document.getElementById('companyName').value.trim();
+            if (!companyName) {
+                document.getElementById('companyNameError').style.display = 'block';
+                return;
+            }
+            nextStep(1);
+        }
 
-        function validateStep2() {
-            const logoUpload = document.getElementById('logoUpload').files.length;
-            if (!logoUpload) {
-                document.getElementById('logoUploadError').style.display = 'block';
-                return;
-            }
-            nextStep(2);
-        }
+        function validateStep2() {
+            const logoUpload = document.getElementById('logoUpload').files.length;
+            if (!logoUpload) {
+                document.getElementById('logoUploadError').style.display = 'block';
+                return;
+            }
+            nextStep(2);
+        }
 
-        // Modified validateStep6 to call the AI generation
-        async function validateStep6() {
-            const artworkUpload = selectedArtworkFile; // Use the stored file object
-            const artworkName = document.getElementById('artworkName').value.trim();
-            const artworkSize = document.getElementById('artworkSize').value.trim();
-            const artworkPrice = document.getElementById('artworkPrice').value.trim();
-            
-            let isValid = true;
+        // Modified validateStep6 to call the AI generation
+        async function validateStep6() {
+            const artworkUpload = selectedArtworkFile; // Use the stored file object
+            const artworkName = document.getElementById('artworkName').value.trim();
+            const artworkSize = document.getElementById('artworkSize').value.trim();
+            const artworkPrice = document.getElementById('artworkPrice').value.trim();
+            
+            let isValid = true;
 
-            // Hide previous errors
-            document.getElementById('artworkUploadError').style.display = 'none';
-            document.getElementById('artworkNameError').style.display = 'none';
-            
-            if (!artworkUpload) {
-                document.getElementById('artworkUploadError').style.display = 'block';
-                isValid = false;
-            }
-            if (!artworkName) {
-                document.getElementById('artworkNameError').style.display = 'block';
-                isValid = false;
-            }
-            
-            if (!isValid) {
-                return;
-            }
+            // Hide previous errors
+            document.getElementById('artworkUploadError').style.display = 'none';
+            document.getElementById('artworkNameError').style.display = 'none';
+            
+            if (!artworkUpload) {
+                document.getElementById('artworkUploadError').style.display = 'block';
+                isValid = false;
+            }
+            if (!artworkName) {
+                document.getElementById('artworkNameError').style.display = 'block';
+                isValid = false;
+            }
+            
+            if (!isValid) {
+                return;
+            }
 
-            // Show loading state in Step 7 immediately
-            const aiDescriptionDiv = document.getElementById('aiDescription');
-            aiDescriptionDiv.innerHTML = '<p>Generating your masterpiece\'s story...</p><div class="loading-spinner"></div>';
-            document.getElementById('descriptionEdit').value = ''; // Clear previous text
-            nextStep(6); // Move to Step 7 (currentStep will become 7)
+            // Show loading state in Step 7 immediately
+            const aiDescriptionDiv = document.getElementById('aiDescription');
+            aiDescriptionDiv.innerHTML = '<p>Generating your masterpiece\'s story...</p><div class="loading-spinner"></div>';
+            document.getElementById('descriptionEdit').value = ''; // Clear previous text
+            nextStep(6); // Move to Step 7 (currentStep will become 7)
 
-            try {
-                // Call the simulated Gemini function
-                const generatedStory = await generateArtworkStory(
-                    brandVoice,
-                    { name: artworkName, size: artworkSize, price: artworkPrice },
-                    selectedArtworkDataURL // Pass Base64 image
-                );
+            try {
+                // Call the simulated Gemini function
+                const generatedStory = await generateArtworkStory(
+                    brandVoice,
+                    { name: artworkName, size: artworkSize, price: artworkPrice },
+                    selectedArtworkDataURL // Pass Base64 image
+                );
 
-                // Display the generated story
-                aiDescriptionDiv.innerHTML = generatedStory;
-                document.getElementById('descriptionEdit').value = generatedStory;
+                // Display the generated story
+                aiDescriptionDiv.innerHTML = generatedStory;
+                document.getElementById('descriptionEdit').value = generatedStory;
 
-            } catch (error) {
-                console.error("Error generating artwork description:", error);
-                aiDescriptionDiv.innerHTML = '<p style="color:red;">Error generating description. Please try again.</p>';
-                document.getElementById('descriptionEdit').value = 'Error generating description.';
-                alert('Failed to generate description. Check console for details.');
-            }
-        }
+            } catch (error) {
+                console.error("Error generating artwork description:", error);
+                aiDescriptionDiv.innerHTML = '<p style="color:red;">Error generating description. Please try again.</p>';
+                document.getElementById('descriptionEdit').value = 'Error generating description.';
+                alert('Failed to generate description. Check console for details.');
+            }
+        }
 
-        function validateStep8() {
-            if (!selectedVoice) {
-                alert("Please select a voice option");
-                return;
-            }
-            generateVoiceover();
-        }
-        
-        // Word selection
-        function selectWord(element, word) {
-            if (element.classList.contains('selected')) {
-                element.classList.remove('selected');
-                selectedWords = selectedWords.filter(w => w !== word);
-            } else if (selectedWords.length < 10) {
-                element.classList.add('selected');
-                selectedWords.push(word);
-            }
-            
-            document.getElementById('wordCounter').textContent = `${selectedWords.length}/10 words selected`;
-            document.getElementById('analyzeBtn').disabled = selectedWords.length !== 10;
-        }
-        
-        // Analyze brand voice
-        function analyzeBrandVoice() {
-            let bestMatch = "";
-            let bestScore = 0;
-            
-            for (const [personality, data] of Object.entries(brandPersonalities)) {
-                const score = data.traits.filter(trait => 
-                    selectedWords.includes(trait)
-                ).length;
-                
-                if (score > bestScore) {
-                    bestScore = score;
-                    bestMatch = personality;
-                }
-            }
-            
-            brandVoice = bestMatch; // Store the determined brand voice
-            
-            const selectedWordsContainer = document.getElementById('selectedWordsDisplay');
-            selectedWordsContainer.innerHTML = '';
-            selectedWords.forEach(word => {
-                const wordElement = document.createElement('div');
-                wordElement.className = 'selected-word';
-                wordElement.textContent = word;
-                wordElement.setAttribute('role', 'listitem');
-                selectedWordsContainer.appendChild(wordElement);
-            });
-            
-            nextStep(3); // Move to selected words review step
-        }
-        
-        function showBrandVoiceResult() {
-            const personalityData = brandPersonalities[brandVoice];
-            
-            const resultDiv = document.getElementById('brandResult');
-            resultDiv.innerHTML = `
-                <h3>${brandVoice}</h3>
-                <p><strong>Voice Traits:</strong> ${personalityData.traits.join(', ')}</p>
-                <p><strong>Personality:</strong> ${personalityData.description}</p>
-                <p><strong>Example Brand:</strong> ${personalityData.example}</p>
-            `;
-            
-            nextStep(4); // Move to brand voice result step
-        }
-        
-        function acceptBrandVoice() {
-            nextStep(5); // Goes to artwork upload (Step 6 in UI, currentStep becomes 6)
-        }
-        
-        function retryBrandVoice() {
-            document.getElementById('step5').classList.remove('active');
-            document.getElementById('step3').classList.add('active');
-            currentStep = 3;
-            updateProgress();
-        }
-        
-        // Image preview
-        function previewImage(file, previewId) {
-            const reader = new FileReader();
-            const preview = document.getElementById(previewId);
-            
-            reader.onload = function(e) {
-                preview.innerHTML = `<img src="${e.target.result}" alt="Preview">`;
-            }
-            
-            if (file) {
-                reader.readAsDataURL(file);
-            }
-        }
-        
-        // === New/Modified AI Integration Logic ===
+        function validateStep8() {
+            if (!selectedVoice) {
+                alert("Please select a voice option");
+                return;
+            }
+            generateVoiceover();
+        }
+        
+        // Word selection
+        function selectWord(element, word) {
+            if (element.classList.contains('selected')) {
+                element.classList.remove('selected');
+                selectedWords = selectedWords.filter(w => w !== word);
+            } else if (selectedWords.length < 10) {
+                element.classList.add('selected');
+                selectedWords.push(word);
+            }
+            
+            document.getElementById('wordCounter').textContent = `${selectedWords.length}/10 words selected`;
+            document.getElementById('analyzeBtn').disabled = selectedWords.length !== 10;
+        }
+        
+        // Analyze brand voice
+        function analyzeBrandVoice() {
+            let bestMatch = "";
+            let bestScore = 0;
+            
+            for (const [personality, data] of Object.entries(brandPersonalities)) {
+                const score = data.traits.filter(trait => 
+                    selectedWords.includes(trait)
+                ).length;
+                
+                if (score > bestScore) {
+                    bestScore = score;
+                    bestMatch = personality;
+                }
+            }
+            
+            brandVoice = bestMatch; // Store the determined brand voice
+            
+            const selectedWordsContainer = document.getElementById('selectedWordsDisplay');
+            selectedWordsContainer.innerHTML = '';
+            selectedWords.forEach(word => {
+                const wordElement = document.createElement('div');
+                wordElement.className = 'selected-word';
+                wordElement.textContent = word;
+                wordElement.setAttribute('role', 'listitem');
+                selectedWordsContainer.appendChild(wordElement);
+            });
+            
+            nextStep(3); // Move to selected words review step
+        }
+        
+        function showBrandVoiceResult() {
+            const personalityData = brandPersonalities[brandVoice];
+            
+            const resultDiv = document.getElementById('brandResult');
+            resultDiv.innerHTML = `
+                <h3>${brandVoice}</h3>
+                <p><strong>Voice Traits:</strong> ${personalityData.traits.join(', ')}</p>
+                <p><strong>Personality:</strong> ${personalityData.description}</p>
+                <p><strong>Example Brand:</strong> ${personalityData.example}</p>
+            `;
+            
+            nextStep(4); // Move to brand voice result step
+        }
+        
+        function acceptBrandVoice() {
+            nextStep(5); // Goes to artwork upload (Step 6 in UI, currentStep becomes 6)
+        }
+        
+        function retryBrandVoice() {
+            document.getElementById('step5').classList.remove('active');
+            document.getElementById('step3').classList.add('active');
+            currentStep = 3;
+            updateProgress();
+        }
+        
+        // Image preview
+        function previewImage(file, previewId) {
+            const reader = new FileReader();
+            const preview = document.getElementById(previewId);
+            
+            reader.onload = function(e) {
+                preview.innerHTML = `<img src="${e.target.result}" alt="Preview">`;
+            }
+            
+            if (file) {
+                reader.readAsDataURL(file);
+            }
+        }
+        
+        // === New/Modified AI Integration Logic ===
 
-        // Simulated Gemini API Call (replace with actual fetch to your backend)
-        async function generateArtworkStory(brandVoice, artworkInfo, artworkImageBase64) {
-            console.log("Simulating Gemini call with:", { brandVoice, artworkInfo, artworkImageBase64: artworkImageBase64 ? 'image_data_present' : 'no_image_data' });
+        // Simulated Gemini API Call (replace with actual fetch to your backend)
+        async function generateArtworkStory(brandVoice, artworkInfo, artworkImageBase64) {
+            console.log("Simulating Gemini call with:", { brandVoice, artworkInfo, artworkImageBase64: artworkImageBase64 ? 'image_data_present' : 'no_image_data' });
 
-            // Simulate network delay
-            await new Promise(resolve => setTimeout(random(2000, 4000), resolve)); 
+            // Simulate network delay
+            await new Promise(resolve => setTimeout(random(2000, 4000), resolve)); 
 
-            // ** THIS IS WHERE YOU'D MAKE A REAL API CALL TO YOUR BACKEND **
-            /*
-            try {
-                const response = await fetch('/api/generate-artwork-story', { // Your backend endpoint
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        brandVoice: brandVoice,
-                        artwork: artworkInfo,
-                        imageData: artworkImageBase64 // Send Base64 image
-                    })
-                });
+            // ** THIS IS WHERE YOU'D MAKE A REAL API CALL TO YOUR BACKEND **
+            /*
+            try {
+                const response = await fetch('/api/generate-artwork-story', { // Your backend endpoint
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        brandVoice: brandVoice,
+                        artwork: artworkInfo,
+                        imageData: artworkImageBase64 // Send Base64 image
+                    })
+                });
 
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    throw new Error(errorData.message || 'Failed to generate description from server.');
-                }
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || 'Failed to generate description from server.');
+                }
 
-                const data = await response.json();
-                return data.description; // Assuming your backend returns { description: "..." }
+                const data = await response.json();
+                return data.description; // Assuming your backend returns { description: "..." }
 
-            } catch (error) {
-                console.error("Backend API error:", error);
-                throw error; // Re-throw to be caught by validateStep6's try-catch
-            }
-            */
+            } catch (error) {
+                console.error("Backend API error:", error);
+                throw error; // Re-throw to be caught by validateStep6's try-catch
+            }
+            */
 
-            // === Simulated Response for Demo ===
-            const personalityData = brandPersonalities[brandVoice];
-            if (personalityData && personalityData.story_template) {
-                 return personalityData.story_template(artworkInfo.name || "this unique artwork");
-            } else {
-                 return `**Beginning:** A canvas, waiting. Then, a vibrant creation, "${artworkInfo.name || "this piece of art"}", emerges, ready to tell its tale.\n\n**Middle:** With the ${brandVoice} voice, its story unfolds. Each color, each line, speaks to your soul, inviting you into a world of imagination. It motivates, it inspires, it captures your gaze, revealing new depths with every glance.\n\n**End:** Now, this artwork stands as a testament to creativity. It's not just a picture; it's a journey, a conversation starter, a daily dose of wonder. Let it spark joy and curiosity in your space.`;
-            }
-        }
+            // === Simulated Response for Demo ===
+            const personalityData = brandPersonalities[brandVoice];
+            if (personalityData && personalityData.story_template) {
+                 return personalityData.story_template(artworkInfo.name || "this unique artwork");
+            } else {
+                 return `**Beginning:** A canvas, waiting. Then, a vibrant creation, "${artworkInfo.name || "this piece of art"}", emerges, ready to tell its tale.\n\n**Middle:** With the ${brandVoice} voice, its story unfolds. Each color, each line, speaks to your soul, inviting you into a world of imagination. It motivates, it inspires, it captures your gaze, revealing new depths with every glance.\n\n**End:** Now, this artwork stands as a testament to creativity. It's not just a picture; it's a journey, a conversation starter, a daily dose of wonder. Let it spark joy and curiosity in your space.`;
+            }
+        }
 
-        // Original generateDescription function (now replaced by validateStep6 calling generateArtworkStory)
-        // I've commented out its original content as it's no longer needed in that form.
-        /*
-        function generateDescription() {
-             const artworkName = document.getElementById('artworkName').value || "this artwork";
-             const descriptions = { ... }; // Your existing descriptions
-             const description = descriptions[brandVoice] || `"${artworkName}" is a unique piece that captures the artist's vision.`;
-             
-             document.getElementById('aiDescription').textContent = description;
-             document.getElementById('descriptionEdit').value = description;
-             nextStep(6);
-        }
-        */
-        
-        // Voiceover functions
-        function selectVoice(element) {
-            document.querySelectorAll('.voice-option').forEach(el => el.classList.remove('selected'));
-            element.classList.add('selected');
-            selectedVoice = element.textContent;
-        }
-        
-        function generateVoiceover() {
-            document.getElementById('voiceoverAudio').src = "#"; // Placeholder for actual audio
-            
-            const recommendations = {
-                "Sassy & Bold": "We recommend a confident, slightly sarcastic tone with crisp enunciation.",
-                "Warm & Nurturing": "We recommend a gentle, soothing voice with a comforting tone.",
-                "Playful & Youthful": "We recommend an energetic, upbeat voice with a smile in the tone.",
-                "Minimalist & Sophisticated": "We recommend a calm, measured voice with precise articulation.",
-                "Authoritative & Professional": "We recommend a clear, professional voice with gravitas.",
-                "Rebellious & Disruptive": "We recommend a edgy, unconventional voice with attitude.",
-                "Quirky & Offbeat": "We recommend a unique, slightly eccentric voice personality.",
-                "Empowering & Inspirational": "We recommend a powerful, motivational voice with conviction.",
-                "Down-to-Earth & Honest": "We recommend a natural, conversational voice that sounds authentic.",
-                "Luxury & Aspirational": "We recommend a refined, elegant voice with perfect diction."
-            };
-            
-            document.getElementById('voiceRecommendation').innerHTML = 
-                `<p><strong>Recommendation:</strong> ${recommendations[brandVoice]}</p>`;
-            
-            nextStep(7);
-        }
-        
-        function addMusic() {
-            alert("Adding royalty-free music that matches your brand voice...");
-            nextStep(8);
-        }
-        
-        function downloadCommercial() {
-            alert("Your commercial is being prepared for download...");
-        }
-        
-        function startOver() {
-            // Reset the form
-            selectedWords = [];
-            brandVoice = "";
-            selectedVoice = "";
-            stepHistory = [];
-            selectedArtworkFile = null;
-            selectedArtworkDataURL = null;
-            
-            // Clear selections
-            document.querySelectorAll('.word-option.selected').forEach(el => el.classList.remove('selected'));
-            document.getElementById('wordCounter').textContent = "0/10 words selected";
-            document.getElementById('analyzeBtn').disabled = true;
-            
-            // Clear inputs
-            document.getElementById('companyName').value = "";
-            document.getElementById('logoPreview').innerHTML = "<p>Logo will appear here</p>";
-            document.getElementById('artworkPreview').innerHTML = "<p>Artwork will appear here</p>";
-            document.getElementById('artworkName').value = "";
-            document.getElementById('artworkSize').value = "";
-            document.getElementById('artworkPrice').value = "";
-            document.getElementById('descriptionEdit').value = "";
-            document.getElementById('aiDescription').innerHTML = ""; // Clear AI description
-            
-            // Hide error messages
-            document.querySelectorAll('.error-message').forEach(el => el.style.display = 'none');
-            
-            // Reset to step 1
-            document.querySelectorAll('.step').forEach(step => step.classList.remove('active'));
-            document.getElementById('step1').classList.add('active');
-            currentStep = 1;
-            updateProgress();
-        }
-    </script>
-    
-    <script src="app.js" defer></script>
+        // Original generateDescription function (now replaced by validateStep6 calling generateArtworkStory)
+        // I've commented out its original content as it's no longer needed in that form.
+        /*
+        function generateDescription() {
+             const artworkName = document.getElementById('artworkName').value || "this artwork";
+             const descriptions = { ... }; // Your existing descriptions
+             const description = descriptions[brandVoice] || `"${artworkName}" is a unique piece that captures the artist's vision.`;
+             
+             document.getElementById('aiDescription').textContent = description;
+             document.getElementById('descriptionEdit').value = description;
+             nextStep(6);
+        }
+        */
+        
+        // Voiceover functions
+        function selectVoice(element) {
+            document.querySelectorAll('.voice-option').forEach(el => el.classList.remove('selected'));
+            element.classList.add('selected');
+            selectedVoice = element.textContent;
+        }
+        
+        function generateVoiceover() {
+            document.getElementById('voiceoverAudio').src = "#"; // Placeholder for actual audio
+            
+            const recommendations = {
+                "Sassy & Bold": "We recommend a confident, slightly sarcastic tone with crisp enunciation.",
+                "Warm & Nurturing": "We recommend a gentle, soothing voice with a comforting tone.",
+                "Playful & Youthful": "We recommend an energetic, upbeat voice with a smile in the tone.",
+                "Minimalist & Sophisticated": "We recommend a calm, measured voice with precise articulation.",
+                "Authoritative & Professional": "We recommend a clear, professional voice with gravitas.",
+                "Rebellious & Disruptive": "We recommend a edgy, unconventional voice with attitude.",
+                "Quirky & Offbeat": "We recommend a unique, slightly eccentric voice personality.",
+                "Empowering & Inspirational": "We recommend a powerful, motivational voice with conviction.",
+                "Down-to-Earth & Honest": "We recommend a natural, conversational voice that sounds authentic.",
+                "Luxury & Aspirational": "We recommend a refined, elegant voice with perfect diction."
+            };
+            
+            document.getElementById('voiceRecommendation').innerHTML = 
+                `<p><strong>Recommendation:</strong> ${recommendations[brandVoice]}</p>`;
+            
+            nextStep(7);
+        }
+        
+        function addMusic() {
+            alert("Adding royalty-free music that matches your brand voice...");
+            nextStep(8);
+        }
+        
+        function downloadCommercial() {
+            alert("Your commercial is being prepared for download...");
+        }
+        
+        function startOver() {
+            // Reset the form
+            selectedWords = [];
+            brandVoice = "";
+            selectedVoice = "";
+            stepHistory = [];
+            selectedArtworkFile = null;
+            selectedArtworkDataURL = null;
+            
+            // Clear selections
+            document.querySelectorAll('.word-option.selected').forEach(el => el.classList.remove('selected'));
+            document.getElementById('wordCounter').textContent = "0/10 words selected";
+            document.getElementById('analyzeBtn').disabled = true;
+            
+            // Clear inputs
+            document.getElementById('companyName').value = "";
+            document.getElementById('logoPreview').innerHTML = "<p>Logo will appear here</p>";
+            document.getElementById('artworkPreview').innerHTML = "<p>Artwork will appear here</p>";
+            document.getElementById('artworkName').value = "";
+            document.getElementById('artworkSize').value = "";
+            document.getElementById('artworkPrice').value = "";
+            document.getElementById('descriptionEdit').value = "";
+            document.getElementById('aiDescription').innerHTML = ""; // Clear AI description
+            
+            // Hide error messages
+            document.querySelectorAll('.error-message').forEach(el => el.style.display = 'none');
+            
+            // Reset to step 1
+            document.querySelectorAll('.step').forEach(step => step.classList.remove('active'));
+            document.getElementById('step1').classList.add('active');
+            currentStep = 1;
+            updateProgress();
+        }
+    </script>
+    
+    <script src="../app.js" defer></script>
 </body>
 </html>
